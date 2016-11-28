@@ -5,62 +5,50 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/common_action_bar_splitter"
-    tools:context="com.imcgeek.cameraapp.LauncherActivity">
+    tools:context="com.imcgeek.cameraapp.ResultActivity">
 
-    <!--<ImageView-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="150dp"-->
-        <!--android:layout_marginLeft="100dp"-->
-        <!--android:src="@mipmap/logo"/>-->
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="100dp"
-        android:text="pH Test"
         android:background="@color/common_signin_btn_dark_text_focused"
-        android:textSize="35dp"
         android:layout_marginTop="100dp"
-        android:id="@+id/pH"
-        android:textColor="@color/colorPrimaryDark"/>
-
-    <Button
+        android:id="@+id/result_ph"
+        android:textSize="40dp"
+        android:textColor="@color/pHColor"
+        android:text=""/>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="100dp"
-        android:text="N Test"
         android:background="@color/common_signin_btn_dark_text_focused"
-        android:textSize="35dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:id="@+id/N"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorPrimaryDark"/>
-
-    <Button
+        android:id="@+id/result_n"
+        android:textSize="40dp"
+        android:textColor="@color/Ncolor"
+        android:text=""/>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="100dp"
-        android:text="P Test"
         android:background="@color/common_signin_btn_dark_text_focused"
-        android:textSize="35dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:id="@+id/P"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorPrimaryDark"/>
-
-    <Button
+        android:id="@+id/result_p"
+        android:textSize="40dp"
+        android:textColor="@color/Pcolor"
+        android:text=""/>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="100dp"
-        android:text="K Test"
         android:background="@color/common_signin_btn_dark_text_focused"
-        android:textSize="35dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:id="@+id/K"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorPrimaryDark"/>
-
+        android:id="@+id/result_k"
+        android:textSize="40dp"
+        android:textColor="@color/Kcolor"
+        android:text=""/>
 </LinearLayout>

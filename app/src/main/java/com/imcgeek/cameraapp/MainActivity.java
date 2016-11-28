@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
     int GrayScale_Value;
     int sumOfMultiImgGS;
     int Capture_delay = 2500;
-    int NumOfImg = 5;
+    int NumOfImg = 3;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                         try {
-                            for (int i = 0; i < 5; i++) {
+                            for (int i = 0; i < 2; i++) {
                                 Log.d(TAG, "Start-" + i);
                                 GrayScale_Value = 0;
                                 Log.i(TAG, "GrayScale = " + GrayScale_Value);
@@ -139,27 +141,33 @@ public class MainActivity extends AppCompatActivity {
                                 sleep(NumOfImg * Capture_delay + Capture_delay);
                                 Log.d(TAG, "Stop");
                             }
-                            Log.i(TAG, "Final GrayScale Value :" + Math.round(sumOfMultiImgGS / 5));
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Your dialog code.
-                                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                                    //alertDialog.setIcon(R.mipmap.alert);
-                                    alertDialog.setTitle(getString(R.string.Alert));
-                                    alertDialog.setMessage(String.valueOf(Math.round(sumOfMultiImgGS / 5)));
-                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.Ok),
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                    Intent intent = new Intent(MainActivity.this,LauncherActivity.class);
-                                                    startActivity(intent);
-                                                }
-                                            });
-                                    alertDialog.show();
-                                }
-                            });
+                            Log.i(TAG, "Final GrayScale Value :" + Math.round(sumOfMultiImgGS / 2));
+                            SharedPreferences sharedPreferences = getSharedPreferences(LauncherActivity.SharedPref, Context.MODE_PRIVATE);
+                            if(sharedPreferences.getString("Test","No test Found").equals("pHTest")){
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("pHResult",Math.round(sumOfMultiImgGS / 2));
+                                editor.commit();
+                            }
+                            if(sharedPreferences.getString("Test","No test Found").equals("NTest")){
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("NResult",Math.round(sumOfMultiImgGS / 2));
+                                editor.commit();
+                            }
+                            if(sharedPreferences.getString("Test","No test Found").equals("PTest")){
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("PResult",Math.round(sumOfMultiImgGS / 2));
+                                editor.commit();
+                            }
+                            if(sharedPreferences.getString("Test","No test Found").equals("KTest")){
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("KResult",Math.round(sumOfMultiImgGS / 2));
+                                editor.commit();
+                            }
+                            Intent intent = new Intent(MainActivity.this,LauncherActivity.class);
+                            startActivity(intent);
+
                             dialog.dismiss();
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             dialog.dismiss();
@@ -298,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             sdRoot = Environment.getExternalStorageDirectory();
+
             dir = "/DCIM/Camera App/";
             fileName = String.valueOf(i) + ".jpg";
             final File mkdir = new File(sdRoot, dir);
@@ -359,12 +368,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     GrayBmpImg_grayScale = addGrayScale / count;
-
-//                    Log.d(TAG,"Img H*W : "+b.getHeight()+"*"+b.getWidth());
-//                    Log.d(TAG,"GrayImg H*W : "+grayBmp.getHeight()+"*"+grayBmp.getWidth());
-//                    Log.d(TAG,"File:"+file);
                     Log.d(TAG, "GrayScale Value = " + GrayBmpImg_grayScale);
-//                    Log.d(TAG,"------------------------------------------");
                     GrayScale_Value = GrayScale_Value + GrayBmpImg_grayScale;
                     createCameraPreview();
                 }
@@ -468,13 +472,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void closeCamera() {
-        if (null != cameraDevice) {
-            cameraDevice.close();
-            cameraDevice = null;
-        }
-        if (null != imageReader) {
-            imageReader.close();
-            imageReader = null;
+        try{
+            if(null != cameraCaptureSessions){
+                cameraCaptureSessions.close();
+                cameraCaptureSessions = null;
+            }
+            if (null != cameraDevice) {
+                cameraDevice.close();
+                cameraDevice = null;
+            }
+            if (null != imageReader) {
+                imageReader.close();
+                imageReader = null;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -504,7 +516,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         Log.e(TAG, "onPause");
-        //closeCamera();
+        closeCamera();
         stopBackgroundThread();
         super.onPause();
     }
